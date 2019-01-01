@@ -1,3 +1,0 @@
-# trollbot
-
-trollbot
