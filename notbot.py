@@ -13,16 +13,18 @@
 #	1) count percent of the time word1 was followed by word 2, that is P(word1->word2)
 #	2) Store in matrix... probability measured by relative occurence of words in static sample
 #
-#						[that's]	[Adam Smith]	[...]	[economy]	
-#				[and]	  0.20			0.01		...		  0.30
-#				 ...	  ...			...			...		  ...
-#				 ...	  ... 			...			...	      ...
-#				[why]	  0.1			0.0001		...		  0.005
-#					
-#		#some regex
+#					[that's] [Adam Smith]	[...]	[economy]	
+#				[and]     0.20	    0.001	 ...	  0.30
+#				 ...      ...	    ...		 ...	  ...
+#				 ...      ... 	    ...		 ...      ...
+#				[why]	  0.1	    0.0001	 ...      0.005
+#				 ...	  ...	    ...		 ...	  ...	
+#
+#		#some regex for formatting datafiles
 #		awk '/<moriarty>.*/'					//pulls lines from user <moriarty>
 #		sed -r 's/\[[^]]+\]\s+<moriarty>\s//g'	//remove timestamps and username
 #		
+#		#combined
 #		awk '/<moriarty>.*/' \#\#econometrics.txt | sed -r 's/\[[^]]+\]\s+<moriarty>\s//g' > moriarty
 #		
 #		get a line
