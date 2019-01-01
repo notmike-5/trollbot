@@ -38,35 +38,67 @@
 from linecache import getline
 from random import randint
 import re
+import time
 
-def makeNGrams(file):
+def buildNGrams(filename):
+	"""
+	PRECONDITION: Given a textfile of newline character delimited strings
+	POSTCONDITION: Returns nGrams, a list of lists (split strings)
+	"""
+	start = time.time()
 	nGrams = []
 
-	num_lines = sum(1 for line in open('language/%s' % file))
+	num_lines = sum(1 for line in open('language/%s' % filename))
 
-	for line in range(num_lines):
-		string = getline('language//%s' % file, line)
+	#pull each line, split it, append it to ngrams
+	for i in range(num_lines):
+		string = getline('language//%s' % filename, i)
 		nGrams.append(string.split())
 
+	#TODO: Close the file?
+	end = time.time()
+	print("\nnGrams built in %d seconds.\n" % (end-start))
+	
 	return nGrams
 
-def getLinks(list):
+def getLinks(strings):
+	"""
+	PRECONDITION: Given a list of lists (nGrams)
+	POSTCONDITION: Returns a list of strings (links)
+	"""
+	start = time.time()
 	links = []
 
-	for nGram in list:
-		#remove all singles
+	for nGram in strings:
+		if len(nGram) == 0:
+			strings.remove(nGram)
 		if len(nGram) == 1:
 			if re.match('http.*', nGram[0]) is not None:
-				links.append(nGram.pop(0))	
-
+				index = strings.index(nGram)
+				links.append(strings.pop(index))
+				while strings.count(nGram) != 0:
+					index = strings.index(nGram)
+					strings.pop(index)
+			else:
+				strings.remove(nGram)
+	end = time.time()
+	print("Links cleaned in %d seconds.\n" % (end-start))
 	return links
 
+def buildMatrix(nGrams):
+	pass
+
+def __sumColumns(array):
+	pass
+
 #Main
-test = makeNGrams('language')
-links = getLinks(test)
+nGrams = buildNGrams('language')
 
-for link in links:
-	print(link)
+links = getLinks(nGrams)
 
-for nGram in test:
-	print(nGram)
+print("\nnGrams:")
+for i in range(5):
+	print(nGrams[i])
+print("\nLinks:")
+for i in range(5):
+	print(links[i])
